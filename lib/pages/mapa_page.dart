@@ -37,9 +37,9 @@ class _MapaPageState extends State<MapaPage> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-
           BtnUbicacion(),
-
+          BtnSeguirUbicacion(),
+          BtnMiRuta(),
         ],
       ),
    );
@@ -50,6 +50,8 @@ class _MapaPageState extends State<MapaPage> {
     if ( !state.existeUbicacion ) return Center(child: Text('Ubicando..'));
 
     final mapaBloc = BlocProvider.of<MapaBloc>(context);
+
+    mapaBloc.add( OnNuevaUbicacion( state.ubicacion ) );
 
     // return Text('${state.ubicacion.longitude}, ${state.ubicacion.latitude}');
     final camaraPosition = new CameraPosition(
@@ -66,6 +68,14 @@ class _MapaPageState extends State<MapaPage> {
       zoomControlsEnabled: false,
       // onMapCreated: ( GoogleMapController controller ) => mapaBloc.initMapa(controller),
       onMapCreated: mapaBloc.initMapa,
+      polylines: mapaBloc.state.polylines.values.toSet(),
+      onCameraMove: (cameraPosition) {
+        // cameraPosition.target = LatLng centraldel mapa
+        mapaBloc.add(OnMovioMapa(cameraPosition.target));
+      },
+      // onCameraIdle: () {
+      //   print('MapaIdle');
+      // },
     );
 
   }
