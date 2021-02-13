@@ -31,8 +31,21 @@ class _MapaPageState extends State<MapaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MiUbicacionBloc, MiUbicacionState>(
-        builder: (context, state) => crearMapa(state),
+      body: Stack(
+        children: [
+          BlocBuilder<MiUbicacionBloc, MiUbicacionState>(
+            builder: (context, state) => crearMapa(state),
+          ),
+
+          // TODO: Hacer el toggle cuando estoy manualmente
+          Positioned(
+            top: 10.0,
+            child: SearchBar()
+          ),
+
+          MarcadorManual()
+
+        ],
       ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
